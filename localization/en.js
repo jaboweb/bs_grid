@@ -17,9 +17,13 @@ var rsc_bs_dg = {
     sort_none: "<i class='glyphicon glyphicon-minus'></i>&nbsp;&nbsp;",
     sorting_default: "Default",
 
+    print: "Print",
+    export: "Export",
+
     filters: "Filters",
     filters_apply: "Apply",
     filters_reset: "Reset",
+    filters_close: "Close",
 
     select: "Select",
     select_all_in_page: "All in page",

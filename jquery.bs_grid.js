@@ -105,6 +105,8 @@
                 elem.unbind("onDatagridError").bind("onDatagridError", settings.onDatagridError);
                 elem.unbind("onDebug").bind("onDebug", settings.onDebug);
                 elem.unbind("onDisplay").bind("onDisplay", settings.onDisplay);
+                elem.unbind("onPrintClick").bind("onPrintClick", settings.onPrintClick);
+                elem.unbind("onExportClick").bind("onExportClick", settings.onExportClick);
 
                 // initialize plugin html
                 var tools_id = create_id(settings.tools_id_prefix, container_id),
@@ -126,6 +128,8 @@
                     filter_container_id = create_id(settings.filter_container_id_prefix, container_id),
                     filter_rules_id = create_id(settings.filter_rules_id_prefix, container_id),
                     filter_tools_id = create_id(settings.filter_tools_id_prefix, container_id),
+                    export_id = create_id(settings.export_id_prefix, container_id),
+                    print_id = create_id(settings.print_id_prefix, container_id),
                     elem_html = "", tools_html = "";
 
                 // create basic html structure ---------------------------------
@@ -148,14 +152,23 @@
                 }
 
                 if(settings.useFilters) {
-                    elem_html += '<div id="' + filter_container_id + '" class="' + settings.filterContainerClass + '">';
-
+                    elem_html += '<div id="' + filter_container_id + '" class="' + settings.filterContainerClass + '" role="dialog">';
+                    elem_html += '<div class="modal-dialog modal-lg"> '+
+                        '<div class="modal-content">  '+
+                        '  <div class="modal-header"> '+
+                        '    <button type="button" class="close" data-dismiss="modal" aria-label="' + rsc_bs_dg.filters_close + '"><span aria-hidden="true">&times;</span></button> '+
+                        '    <h4 class="modal-title">' + rsc_bs_dg.filters +'</h4>'+
+                        '  </div>'+
+                        '<div class="modal-body">';
                     elem_html += '<div id="' + filter_rules_id + '"></div>';
 
                     elem_html += '<div id="' + filter_tools_id + '" class="' + settings.filterToolsClass + '">';
                     elem_html += '<button class="' + settings.filterApplyBtnClass + '">' + rsc_bs_dg.filters_apply + '</button>';
                     elem_html += '<button class="' + settings.filterResetBtnClass + '">' + rsc_bs_dg.filters_reset + '</button>';
 
+                    elem_html += '</div>';
+                    elem_html += '</div>';
+                    elem_html += '</div>';
                     elem_html += '</div>';
                 }
 
@@ -277,7 +290,17 @@
 
                 // filter toggle button ----------------------------------------
                 if(settings.useFilters) {
-                    tools_html += '<button id="' + filter_toggle_id + '" class="btn btn-default pull-right" title="' + rsc_bs_dg.filters + '"><span class="' + settings.filterToggleButtonIconClass + '"></span></button>';
+                    tools_html += '<button data-toggle="modal" data-target="#' + filter_container_id +'" id="' + filter_toggle_id + '" class="btn btn-default pull-right" title="' + rsc_bs_dg.filters + '"><span class="' + settings.filterToggleButtonIconClass + '"></span></button>';
+                }
+
+                // export button ----------------------------------------
+                if(settings.showExportButton) {
+                    tools_html += '<button id="' + export_id + '" class="btn btn-default pull-right" title="' + rsc_bs_dg.export + '"><span class="' + settings.exportButtonIconClass + '"></span></button>';
+                }
+
+                // print button ----------------------------------------
+                if(settings.showPrintButton) {
+                    tools_html += '<button id="' + print_id + '" class="btn btn-default pull-right" title="' + rsc_bs_dg.print + '"><span class="' + settings.printButtonIconClass + '"></span></button>';
                 }
 
                 elem_tools.html(tools_html);
@@ -668,7 +691,7 @@
 
                     /* filter toogle */
                     elem_tools.off("click", "#" + filter_toggle_id).on("click", "#" + filter_toggle_id, function() {
-
+                           /*
                         if(elem_filter_container.is(":visible")) {
                             elem_filter_container.slideUp();
                             if(settings.filterOptions.filter_rules.length > 0) {
@@ -680,7 +703,7 @@
                             // mark filter toggle as inactive
                             elem_filter_toggle.removeClass(settings.filterToggleActiveClass);
                         }
-
+*/
                     });
 
                     /* filter tools */
@@ -708,6 +731,28 @@
                         settings.pageNum = 1;
                         methods.displayGrid.call(elem, true);
 
+                    });
+
+                }
+                
+                // EXPORT -----------------------------------------------------
+                if(settings.showExportButton) {
+
+                    /* export button */
+                    elem_tools.off("click", "#" + export_id).on("click", "#" + export_id, 
+                    function(){
+                        elem.triggerHandler("onExportClick");
+                    });
+
+                }
+
+                // PRINT -----------------------------------------------------
+                if(settings.showPrintButton) {
+
+                    /* print button */
+                    elem_tools.off("click", "#" + print_id).on("click", "#" + print_id, 
+                    function(){
+                        elem.triggerHandler("onPrintClick");
                     });
 
                 }
@@ -783,6 +828,10 @@
                 /* STYLES ----------------------------------------------------*/
                 bootstrap_version: "3",
 
+                /* EXPORT & PRINT---------------------------------------------*/
+                showExportButton: true,
+                showPrintButton: true,
+
                 // bs 3
                 containerClass: "grid_container",
                 noResultsClass: "alert alert-warning no-records-found",
@@ -804,21 +853,25 @@
                 selectButtonIconClass: "glyphicon  glyphicon-check",
                 selectedRowsClass: "selected-rows",
 
+                exportButtonIconClass: "glyphicon glyphicon-open-file",
+                printButtonIconClass: "glyphicon glyphicon-print",
+
                 filterToggleButtonIconClass: "glyphicon glyphicon-filter",
                 filterToggleActiveClass: "btn-info",
 
-                sortingIndicatorAscClass: "glyphicon glyphicon-chevron-up text-muted",
-                sortingIndicatorDescClass: "glyphicon glyphicon-chevron-down text-muted",
+                sortingIndicatorAscClass: "glyphicon glyphicon-sort-by-attributes text-muted",
+                sortingIndicatorDescClass: "glyphicon glyphicon-sort-by-attributes-alt text-muted",
 
                 dataTableContainerClass: "table-responsive",
                 dataTableClass: "table table-bordered table-hover",
                 commonThClass: "th-common",
                 selectedTrClass: "warning",
 
-                filterContainerClass: "well filters-container",
-                filterToolsClass: "",
+                filterContainerClass: "modal",
+                filterToolsClass: "modal-footer",
                 filterApplyBtnClass: "btn btn-primary btn-sm filters-button",
                 filterResetBtnClass: "btn btn-default btn-sm filters-button",
+                filterCloseBtnClass: "btn btn-default btn-sm filters-button",
 
                 // prefixes
                 tools_id_prefix: "tools_",
@@ -842,6 +895,9 @@
                 filter_rules_id_prefix: "flt_rules_",
                 filter_tools_id_prefix: "flt_tools_",
 
+                export_id_prefix: "export_",
+                print_id_prefix: "print_",
+
                 // misc
                 debug_mode: "no",
 
@@ -855,7 +911,11 @@
                 onDebug: function() {
                 },
                 onDisplay: function() {
-                }
+                },
+                onPrintClick: function(){
+                },
+                onExportClick: function(){
+                },
             };
 
             if(bootstrap_version == "2") {
