@@ -20,6 +20,7 @@ var rsc_bs_dg = {
     filters: "Φίλτρα",
     filters_apply: "Εφαρμογή",
     filters_reset: "Απαλοιφή",
+    filters_close: "Close",
 
     select: "Επιλογή",
     select_all_in_page: "Όλα στη σελίδα",

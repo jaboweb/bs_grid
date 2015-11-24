@@ -20,6 +20,7 @@ var rsc_bs_dg = {
     filters: "Фильтры",
     filters_apply: "Применить",
     filters_reset: "Сброс",
+    filters_close: "Close",
 
     select: "Выбор",
     select_all_in_page: "Всё на странице",
