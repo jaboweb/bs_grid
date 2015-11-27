@@ -12,8 +12,8 @@ var rsc_bs_dg = {
     columns_default: "По умолчанию",
 
     sorting: "Сортировка",
-    sort_ascending: "<i class='glyphicon glyphicon-chevron-up'></i>&nbsp;&nbsp;",
-    sort_descending: "<i class='glyphicon glyphicon-chevron-down'></i>&nbsp;&nbsp;",
+    sort_ascending: "<i class='glyphicon glyphicon-sort-by-attributes'></i>&nbsp;&nbsp;",
+    sort_descending: "<i class='glyphicon glyphicon-sort-by-attributes-alt'></i>&nbsp;&nbsp;",
     sort_none: "<i class='glyphicon glyphicon-minus'></i>&nbsp;&nbsp;",
     sorting_default: "По умолчанию",
 
